@@ -1,5 +1,6 @@
 // save a highlight to storage
 function save(selection, container, url, color, callback) {
+  console.log('saving...', selection);
   chrome.storage.local.get({ highlights: {} }, (result) => {
     const highlights = result.highlights;
 
@@ -14,13 +15,19 @@ function save(selection, container, url, color, callback) {
       focusOffset: selection.focusOffset,
       color: color,
     });
+    console.log('current highlights to be saved:', highlights);
     chrome.storage.local.set({ highlights });
 
     if (callback) callback(count - 1);
   });
 }
 
-// update or delete a highlight
+// delete a highlight
+function deleteOne(highlightIndex, url) {
+  // TODO
+}
+
+// update a highlight
 function update(highlightIndex, url, newColor) {
   chrome.storage.local.get({ highlights: {} }, (result) => {
     const highlights = result.highlights;
@@ -52,38 +59,21 @@ function loadAll(url) {
 }
 
 // load a highlight
-function load(highlightVal, highlightIndex, noErrorTracking) {
+function load(highlightVal, highlightIndex) {
   const selection = {
-    anchorNode: elementFromQuery(highlightVal.anchorNode),
+    anchorNode: document.querySelector(
+      elementFromQuery(highlightVal.anchorNode),
+    ),
     anchorOffset: highlightVal.anchorOffset,
-    focusNode: elementFromQuery(highlightVal.focusNode),
+    focusNode: document.querySelector(elementFromQuery(highlightVal.focusNode)),
     focusOffset: highlightVal.focusOffset,
   };
 
-  const selectionString = highlightVal.string;
-  const container = elementFromQuery(highlightVal.container);
-  const color = highlightVal.color;
+  // TODO: how to load a selection saved in storage... any web API that is easier to use?
+  // https://stackoverflow.com/a/67968714
 
-  if (!selection.anchorNode || !selection.focusNode || !container) {
-    if (!noErrorTracking) {
-      addHighlightError(highlightVal, highlightIndex);
-    }
-    return false;
-  }
-
-  let success = false;
-  success = highlight(
-    selectionString,
-    container,
-    selection,
-    color,
-    highlightIndex,
-  );
-
-  if (!noErrorTracking && !success) {
-    addHighlightError(highlightVal, highlightIndex);
-  }
-  return success;
+  // const simpleHighlighter = document.createElement('simple-highlighter');
+  // simpleHighlighter.loadHighlight(selection);
 }
 
 // Get element from stored query

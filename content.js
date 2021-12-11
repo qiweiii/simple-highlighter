@@ -34,3 +34,10 @@ document.addEventListener('selectionchange', () => {
     setMarkerPosition({ display: 'none' });
   }
 });
+
+// Alternative to load event
+document.onreadystatechange = function () {
+  if (document.readyState === 'complete') {
+    loadAll(window.location.hostname + window.location.pathname);
+  }
+};
