@@ -1,0 +1,13 @@
+{
+  "name": "simple-highlighter",
+  "version": "1.0.0",
+  "description": "chrome extension to highlight text and save them locally",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Qiwei",
+  "license": "MIT",
+  "dependencies": {
+    "@webcomponents/custom-elements": "^1.5.0"
+  }
+}
